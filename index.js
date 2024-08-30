@@ -4,7 +4,7 @@ const letters = [ // array of letters
     'Z', 'X', 'C', 'V', 'B', 'N', 'M'
 ];
 
-const data = [{ // array of images and answer
+const entryData = [{ // array of images and answer
         id: 1,
         image: "https://cdn.pixabay.com/photo/2024/05/08/17/45/animal-8748794_640.jpg",
         answer: 'lion'
@@ -28,11 +28,28 @@ const data = [{ // array of images and answer
     }
 ]
 
+function shuffle(array) { // shuffle array when reloading
+    let currentIndex = array.length;
+ 
+    while (currentIndex != 0) {
+      let randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+  
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+
+    return array
+  }
+  
+
 
 let gameCard = document.getElementById('game-card')
 let gameImg = document.getElementById('game-card').firstElementChild
 let initialCount = document.getElementById('countdown').innerText
+let data = shuffle(entryData)
 
+ 
 function stopGame(interval) { // function to clear any interval
     clearInterval(interval)
 }
@@ -60,7 +77,7 @@ function startTimer(count) { // function to start countdown timer
 function startEntry(currentIndex, countDownTimer, score) { // function to pass data entry
     let entryIndex = currentIndex
     gameImg.setAttribute('src', data[entryIndex].image)
-    gameImg.setAttribute('alt', data[entryIndex].id)
+    gameImg.setAttribute('alt', entryIndex)
     let entryInterval = setInterval(() => {
         entryIndex++;
         if (entryIndex >= data.length) {
@@ -77,7 +94,7 @@ function startEntry(currentIndex, countDownTimer, score) { // function to pass d
 
         } else {
             gameImg.setAttribute('src', data[entryIndex].image)
-            gameImg.setAttribute('alt', data[entryIndex].id)
+            gameImg.setAttribute('alt', entryIndex)
             document.getElementById('answer').innerText = ''
         }
 
@@ -122,9 +139,9 @@ function startGame() { // function to start game
 
     document.getElementById('checkAnswer').addEventListener('click', function() { // check answer
         let inputedAnswer = document.getElementById('answer').innerText;
-        let dataIndex = gameImg.getAttribute('alt');
+        let dataIndex = parseInt(gameImg.getAttribute('alt')) ;
         let responseMsg = document.getElementById('response')
-        if (inputedAnswer.toLocaleLowerCase() === data[dataIndex - 1].answer) {
+        if (inputedAnswer.toLocaleLowerCase() === data[dataIndex].answer) {
             score++
             responseMsg.innerHTML = `<p class="text-center">✅Correct!</p>`
             responseMsg.classList.add('text-success')
@@ -136,11 +153,11 @@ function startGame() { // function to start game
             document.getElementById('answer').innerText = ''
             stopGame(entryInterval)
             stopGame(countDown)
+console.log(dataIndex + 1)
 
-
-            if (data[dataIndex]) {
+            if (data[dataIndex + 1]) {
                 countDown = startTimer(initialCount) // restart timer
-                entryInterval = startEntry(dataIndex, countDown, score) // go to next entry
+                entryInterval = startEntry(dataIndex + 1, countDown, score) // go to next entry
 
             } else {
                 gameCard.style.margin = 0
