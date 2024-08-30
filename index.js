@@ -66,6 +66,7 @@ function startEntry(currentIndex, countDownTimer, score) { // function to pass d
         if (entryIndex >= data.length) {
             stopGame(entryInterval);
             stopGame(countDownTimer);
+            gameCard.style.margin = 0
             gameCard.innerHTML = `<div class="d-flex flex-column justify-content-center align-items-center">
                 <p class="my-3 fw-bold text-center" style="font-size: 30px; font-family: cursive; color: orange;">Game Over!</p>
                 <p class="fw-bold">Your Score is:</p>
@@ -142,6 +143,7 @@ function startGame() { // function to start game
                 entryInterval = startEntry(dataIndex, countDown, score) // go to next entry
 
             } else {
+                gameCard.style.margin = 0
                 gameCard.innerHTML = `<div class="d-flex flex-column justify-content-center align-items-center">
                 <p class="my-3 fw-bold text-center" style="font-size: 30px; font-family: cursive; color: orange;">Game Over!</p>
                 <p class="fw-bold">Your Score is:</p>
